@@ -1,0 +1,124 @@
+.main-content-top {
+    display: flex;
+    background-color: #eeeeee;
+    justify-content: space-between;
+    border-radius: 2px;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  .sidebar-toggler {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+  }
+  .search-and-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:5px;
+    flex-wrap: wrap;
+  }
+  
+  .sidebar-toggler img {
+    width: 20px;
+    background-color: #333;
+  }
+  .content-top-title {
+    color: var(--clr-white);
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .content-top-btns {
+    margin-left: 18px;
+  }
+  
+  .content-top-btn img {
+    width: 30px;
+    background-image: black;
+  }
+  .content-top-btn img:hover {
+    filter: brightness(0) invert(1);
+  }
+  .content-top-left {
+    display: flex;
+    align-items: center;
+  }
+  .toggle-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .toggle-label {
+    margin-top: 5px;
+    margin-left: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* The switch - the box around the slider */
+  .switch {
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+    width: 47px;
+    height: 30px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 18px;
+    left: 4px;
+    bottom: 6px;
+    background-color: white;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #293036;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #293036;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+  
+  .slider.round {
+    
+    border-radius: 17px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  @media (max-width: 768px) {
+    .search-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .toggle-container {
+      margin-top: 10px;
+    }
+  }

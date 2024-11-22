@@ -1,0 +1,49 @@
+.stats-header {
+  background: white;
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.icon-button {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--gray-500);
+  transition: all 0.2s;
+}
+
+.icon-button:hover {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -1,0 +1,70 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    background-color: #E0F7FA; /* Light sky blue background */
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #0288D1; /* Darker sky blue for the sidebar */
+    color: white;
+    padding: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 15px 0;
+  }
+  
+  .header {
+    backdrop-filter:blur(30px); 
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search-bar {
+    padding: 8px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Add a border for visibility */
+    background-color: #FFFFFF; /* Ensure the background is white */
+    color: #000000; /* Set the text color to black */
+    transition: border-color 0.3s; /* Add a transition for focus effect */
+    cursor: text; /* Cursor changes to text when focused */
+}
+
+.search-bar:focus {
+    outline: none; /* Remove default outline */
+    border-color: #0288D1; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 136, 209, 0.5); /* Add a subtle shadow for focus */
+}
+
+
+  
+ 
+
+  .opportunity-item:hover {
+    background-color: #f5f5f5; /* Change background on hover */
+}
+
+
+.opportunity-feed{
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}

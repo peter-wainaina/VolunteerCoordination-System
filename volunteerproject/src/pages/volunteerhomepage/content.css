@@ -1,0 +1,52 @@
+
+.main-content {
+  background-color:white ;
+  flex: 1;
+  padding: 10px;
+  margin-left: 260px; 
+  transition: margin-left 0.3s ease; 
+  overflow-x: hidden;
+}
+.topheader{
+  background-color: #031820;
+  
+}
+
+.topheader-holder{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+}
+.p{
+  
+  color: #fffafa;
+  margin-bottom: 20px;
+}
+.topheader-title{
+  font-size: 1.875rem; 
+  font-weight: bold;
+}
+.subtitle{
+  margin-top: 0.5rem; 
+  text-align: center; 
+  font-size: 1.25rem;
+}
+
+.sidebar-change ~ .main-content {
+  margin-left: 0%; 
+}
+
+@media screen and (max-width: 1000px) {
+  .main-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

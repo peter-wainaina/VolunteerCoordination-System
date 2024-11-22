@@ -1,0 +1,15 @@
+body, html {
+  height: 100%;
+  margin: 0;    
+}
+.dashboard {
+  display: flex;               
+  flex-direction: row;       
+  height: 100vh;              
+  width: 100vw;    
+            
+}
+/* Ensure Tailwind CSS is properly imported */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";

@@ -1,0 +1,112 @@
+.recent-activities {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  height: 500px; /* Fixed height */
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-activities h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 1.5rem;
+  /* Keep header fixed */
+  flex-shrink: 0;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Make only the list scrollable */
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 0.5rem; /* Space for scrollbar */
+}
+
+/* Styling the scrollbar */
+.activities-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.activities-list::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 10px;
+}
+
+.activities-list::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 10px;
+}
+
+.activities-list::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+.activity-item {
+  padding: 1rem;
+  background: var(--gray-50);
+  border-radius: 0.75rem;
+  transition: all 0.2s;
+}
+
+.activity-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.activity-item h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 0.75rem;
+}
+
+.activity-details {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.activity-details p {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  /* Keep buttons fixed at bottom */
+  flex-shrink: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-100);
+}
+
+.view-all-button,
+.log-hours-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.view-all-button {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.log-hours-button {
+  background: var(--primary-500);
+  color: white;
+}
+
+.view-all-button:hover {
+  background: var(--gray-200);
+}
+
+.log-hours-button:hover {
+  background: var(--primary-600);
+}

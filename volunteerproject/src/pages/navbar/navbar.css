@@ -1,0 +1,76 @@
+.nav{
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+  margin:40px 120px;
+  color:white;
+}
+.nav-logo{
+  font-family: 'sans-serif';
+  font-size: 42px;
+  font-weight: 500;
+}
+.nav-menu{
+  position: relative;
+}
+.signup-btn {
+  transition: all 0.5s;
+  font-size: 17px;
+  padding: 1ch 2ch;
+  background-color: rgba(30, 22, 22, 0.604);
+  color: #f3eded;
+  cursor: pointer;
+  border: none;
+  border-radius: 24px;
+  box-shadow:
+    2px 2px 0px hsl(0, 0%, 90%),
+    4px 4px 0px hsl(0, 0%, 80%),
+    6px 6px 0px hsl(0, 0%, 70%),
+    8px 8px 0px hsl(0, 0%, 60%),
+    10px 10px 0px hsl(0, 0%, 50%),
+    12px 12px 0px hsl(0, 0%, 40%),
+    14px 14px 0px hsl(0, 0%, 30%),
+    16px 16px 0px hsl(0, 0%, 20%),
+    18px 18px 0px hsl(0, 1%, 15%);
+}
+  
+.signup-btn:hover {
+  background-color: hsl(0, 0%, 50%);
+  color: #fff;
+  box-shadow: none;
+  cursor: pointer;
+}
+  
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  padding:5px;
+  left: 0;
+  background-color: rgba(255, 252, 252, 0.604);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  width: 100%;
+  opacity: 0;  
+  max-height: 0;  
+  overflow: hidden; 
+  transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+}
+  
+.dropdown-item {
+  color: rgb(42, 29, 29); 
+  background-color: transparent;
+  padding: 10px; 
+  text-decoration: none; 
+  border-radius: 24px;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background: silver;
+}
+
+/* When dropdown is visible */
+.dropdown-menu.show {
+  opacity: 1;  /* Make it visible */
+  max-height: 200px;  /* Allow the dropdown to expand */
+}

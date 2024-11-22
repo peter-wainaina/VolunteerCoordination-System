@@ -1,0 +1,174 @@
+{
+  "opportunities": [
+    {
+      "id": "4",
+      "title": "Volunteer Coordinator",
+      "organization": "Community Outreach Center",
+      "location": "Denver, CO",
+      "type": "Part-time",
+      "date": "2024-10-12",
+      "description": "We need a passionate volunteer coordinator to help recruit, train, and manage volunteers for various community service projects.",
+      "skills": "social skills",
+      "availability": "Weekends"
+    },
+    {
+      "id": "5",
+      "title": "Data Analyst Intern",
+      "organization": "Education for All",
+      "location": "Remote",
+      "type": "Internship",
+      "date": "2024-10-22",
+      "description": "Work with our team to analyze data on education outreach programs and generate reports to help improve our impact.",
+      "skills": "taeching,caring "
+    },
+    {
+      "id": "6",
+      "title": "Event Organizer",
+      "organization": "Charity Run Inc.",
+      "location": "Chicago, IL",
+      "type": "Part-time",
+      "date": "2024-10-26",
+      "description": "Seeking an organized individual to plan and execute fundraising events, manage volunteers, and ensure smooth event operations.",
+      "skills": "social skills"
+    },
+    {
+      "id": "7",
+      "title": "Web Developer (Volunteer)",
+      "organization": "Animal Rescue Network",
+      "location": "Remote",
+      "type": "Volunteer",
+      "date": "2024-10-17",
+      "description": "Help build and maintain a user-friendly website for our animal rescue initiatives. Knowledge of WordPress and JavaScript preferred.",
+      "skills": "Part-time",
+      "availability": "Weekends"
+    },
+    {
+      "id": "8",
+      "title": "Social Media Manager",
+      "organization": "Youth Empowerment Group",
+      "location": "Austin, TX",
+      "type": "Volunteer",
+      "date": "2024-11-05",
+      "description": "Manage our social media presence by creating and scheduling posts, engaging with followers, and analyzing social media metrics."
+    },
+    {
+      "id": "9",
+      "title": "Community Clean-up Lead",
+      "organization": "City Beautification Team",
+      "location": "Toronto, ON",
+      "type": "Part-time",
+      "date": "2024-10-30",
+      "description": "Lead a team of volunteers in community clean-up efforts, ensuring environmental protection and sustainability practices."
+    },
+    {
+      "id": "10",
+      "title": "Youth Mentor",
+      "organization": "Big Brothers Big Sisters",
+      "location": "Vancouver, BC",
+      "type": "Volunteer",
+      "date": "2024-12-01",
+      "description": "Mentor young individuals by providing guidance, support, and positive role modeling in their personal and educational development."
+    },
+    {
+      "id": "11",
+      "title": "Graphic Designer",
+      "organization": "Art for Change Foundation",
+      "location": "Seattle, WA",
+      "type": "Contract",
+      "date": "2024-11-15",
+      "description": "Design creative marketing materials for our foundation, helping to promote art programs that benefit underserved communities."
+    },
+    {
+      "id": "12",
+      "title": "Fundraising Specialist",
+      "organization": "Save the Oceans",
+      "location": "Miami, FL",
+      "type": "Volunteer",
+      "date": "2024-12-10",
+      "description": "We need a fundraising specialist to develop strategies to raise money for ocean conservation projects. Previous experience is a plus."
+    },
+    {
+      "id": "13",
+      "title": "Tech Support Volunteer",
+      "organization": "ElderCare Network",
+      "location": "Remote",
+      "type": "Volunteer",
+      "date": "2024-11-20",
+      "description": "Assist elderly individuals with basic tech support, including using smartphones, computers, and video calling platforms."
+    },
+    {
+      "id": "14",
+      "title": "Data Analyst Intern",
+      "organization": "Education for All",
+      "location": "Remote",
+      "type": "Internship",
+      "date": "2024-12-05",
+      "description": "Work with our team to analyze data on education outreach programs and generate reports to help improve our impact."
+    },
+    {
+      "id": "15",
+      "title": "Content Writer",
+      "organization": "Mental Health Awareness",
+      "location": "New York, NY",
+      "type": "Volunteer",
+      "date": "2024-11-25",
+      "description": "Write blog posts, articles, and social media content that promotes mental health awareness and reduces stigma around mental illnesses."
+    },
+    {
+      "id": "16",
+      "title": "Fundraising Coordinator",
+      "organization": "Community Health Initiative",
+      "location": "Chicago, IL",
+      "type": "Contract",
+      "date": "2024-10-11",
+      "description": "Coordinate fundraising events and campaigns to support health initiatives in the community."
+    },
+    {
+      "id": "17",
+      "title": "Marketing Intern",
+      "organization": "Tech4All",
+      "location": "Remote",
+      "type": "Internship",
+      "date": "2024-10-09",
+      "description": "Assist with marketing strategies and campaigns for technology access programs."
+    },
+    {
+      "id": "18",
+      "title": "Workshop Facilitator",
+      "organization": "Skills Development Center",
+      "location": "Atlanta, GA",
+      "type": "Part-time",
+      "date": "2024-10-07",
+      "description": "Facilitate workshops aimed at skill development for job seekers in the community."
+    },
+    {
+      "id": "19",
+      "title": "Translation Volunteer",
+      "organization": "Global Voices",
+      "location": "Los Angeles, CA",
+      "type": "Volunteer",
+      "date": "2024-10-05",
+      "description": "Translate documents and materials for organizations working with diverse communities."
+    },
+    {
+      "id": "20",
+      "title": "Research Assistant",
+      "organization": "Social Policy Research Institute",
+      "location": "New York, NY",
+      "type": "Internship",
+      "date": "2024-10-03",
+      "description": "Assist in conducting research on social policy issues and compiling data for reports."
+    },
+    {
+      "id": "1729122656057",
+      "title": "Gardener",
+      "organization": "nyumbani children's home",
+      "location": "kenya,karen",
+      "type": "full-time",
+      "skills": "social skills",
+      "availability": "Weekdays",
+      "description": "be naturing",
+      "date": "2025-01-17"
+    }
+  ]
+}

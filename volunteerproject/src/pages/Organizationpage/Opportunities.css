@@ -1,0 +1,71 @@
+/* Grid layout similar to YouTube's homepage */
+.opportunities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Space between the cards */
+    padding: 20px;
+    justify-content: center;
+  }
+  
+  /* Opportunity card with Flexbox for layout */
+  .opportunity-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Image on top, content below */
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  
+  .opportunity-card:hover {
+    transform: translateY(-5px); /* Slight hover lift */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Thumbnail image styling */
+  .thumbnail img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures the image fills the space while maintaining aspect ratio */
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Content inside the opportunity card */
+  .opportunity-details {
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Ensures space between elements */
+  }
+  
+  .opportunity-details h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .opportunity-details p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .opportunity-details p strong {
+    color: #333;
+  }
+  
+  .opportunity-details button {
+    background-color: #ff5722;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .opportunity-details button:hover {
+    background-color: #e64a19;
+  }

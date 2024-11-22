@@ -1,0 +1,25 @@
+.topheader{
+    background-color: rgba(255, 251, 251, 0.318);
+    
+  }
+  
+  .topheader-holder{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  
+  }
+  .p{
+    
+    color: #fffafa;
+    margin-bottom: 20px;
+  }
+  .topheader-title{
+    font-size: 1.875rem; 
+    font-weight: bold;
+  }
+  .subtitle{
+    margin-top: 0.5rem; 
+    text-align: center; 
+    font-size: 1.25rem;
+  }

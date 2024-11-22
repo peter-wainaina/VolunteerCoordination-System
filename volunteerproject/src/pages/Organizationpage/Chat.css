@@ -1,0 +1,53 @@
+/* Dashboard.css */
+.dashboard-container {
+    display: flex;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* OpportunitiesList.css */
+  .opportunities-list {
+    margin-top: 20px;
+  }
+  
+  .opportunity-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Chat.css */
+  .chat-container {
+    margin-top: 20px;
+  }
+  
+  .chat-box {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .message {
+    margin: 5px 0;
+  }
+  
+  .message.organization {
+    text-align: right;
+  }
+  
+  .chat-input {
+    display: flex;
+    margin-top: 10px;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
