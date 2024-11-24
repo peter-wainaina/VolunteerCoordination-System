@@ -17,7 +17,9 @@ import Orgfeedback from './pages/Organizationpage/Orgfeedback';
 import Organizationsignuppage from './pages/Organizationsignuppage';
 import Organizationloginpage from './pages/organizationloginpage';
 import Signuppage from './pages/Signuppage';
+import Manage from './pages/Organizationpage/Manage';
 import UpdateProfile from './pages/UpdateProfile';
+import Orgupdateprofile from './pages/Organizationpage/Orgupdateprofile';
 import Volunteerdashboard from './pages/volunteerhomepage/volunteerdashboard';
 import Volunteerloginpage from './pages/volunteerloginpage';
 import Savedoppotunities from './pages/volunteerhomepage/savedopportunities/Savedopportunities';
@@ -87,6 +89,11 @@ const router = createBrowserRouter([
     path: "/volunteer/profile",
     element: 
     <UpdateProfile/>,
+  },
+  {
+    path: "/organization/profile",
+    element: 
+    <Orgupdateprofile/>,
   },
 
   {
@@ -169,6 +176,11 @@ const router = createBrowserRouter([
     path: "/home/Organization-feedback",
     element: 
     <Orgfeedback />,
+  },
+  {
+    path: "/home/volunteerview",
+    element: 
+    <Manage />,
   },
 
   

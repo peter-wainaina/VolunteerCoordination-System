@@ -209,17 +209,9 @@ router.post('/login/admin', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    console.log('Admin login attempt for email:', email);
-
     const db = await connectToDatabase();
-    if (!db) {
-      console.error('Database connection failed');
-      return res.status(500).json({ message: "Database connection error" });
-    }
-
     const [rows] = await db.query('SELECT * FROM admins WHERE email = ?', [email]);
-    console.log('Query result:', rows);
-
+    
     if (rows.length === 0) {
       return res.status(404).json({ message: "Admin not found" });
     }
@@ -229,13 +221,16 @@ router.post('/login/admin', async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Check for JWT_SECRET
-    if (!process.env.JWT_KEY) {
-      console.error('JWT_SECRET is not set');
-      return res.status(500).json({ message: "Server configuration error" });
-    }
-
-    const token = jwt.sign({id: rows[0].id, role: 'admin'}, process.env.JWT_KEY, {expiresIn: '5h'})
+    // Create token with admin role
+    const token = jwt.sign(
+      {
+        id: rows[0].id,
+        role: 'admin',  // Make sure this is set
+        email: rows[0].email
+      }, 
+      process.env.JWT_KEY, 
+      { expiresIn: '5h' }
+    );
 
     return res.status(200).json({ 
       message: "Admin login successful",
@@ -243,12 +238,132 @@ router.post('/login/admin', async (req, res) => {
       admin: {
         id: rows[0].id,
         username: rows[0].username,
-        email: rows[0].email
+        email: rows[0].email,
+        role: 'admin'
       }
     });
   } catch (err) {
-    console.error('Admin login error:', err); 
-    return res.status(500).json({ message: "Internal server error", error: err.message });
+    console.error('Admin login error:', err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get('/admin/profile', verifyToken, async (req, res) => {
+  try {
+    console.log('User from token:', req.user); // Debug log
+
+    // Check if user is admin
+    if (!req.user.role || req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Unauthorized: Admin access required' });
+    }
+
+    const db = await connectToDatabase();
+    const [admins] = await db.query(
+      'SELECT id, username, email FROM admins WHERE id = ?',
+      [req.user.id]
+    );
+
+    console.log('Query result:', admins); // Debug log
+
+    if (!admins || admins.length === 0) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    return res.status(200).json(admins[0]);
+  } catch (err) {
+    console.error('Error fetching admin profile:', err);
+    return res.status(500).json({ message: 'Failed to fetch profile' });
+  }
+});
+
+
+router.put('/admin/profile', verifyToken, async (req, res) => {
+  try {
+    // Verify that the user is an admin
+    if (!req.user.role || req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Unauthorized: Admin access required' });
+    }
+
+    const adminId = req.user.id;
+    const { username, email, password } = req.body;
+
+    const db = await connectToDatabase();
+
+    // Verify admin exists
+    const [existingAdmin] = await db.query(
+      'SELECT * FROM admins WHERE id = ?',
+      [adminId]
+    );
+
+    if (!existingAdmin.length) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Build update query
+    let updateQuery = 'UPDATE admins SET';
+    const updateValues = [];
+    const updates = [];
+
+    if (username) {
+      // Check if username is already taken by another admin
+      const [existingUsername] = await db.query(
+        'SELECT id FROM admins WHERE username = ? AND id != ?',
+        [username, adminId]
+      );
+      if (existingUsername.length > 0) {
+        return res.status(409).json({ message: 'Username already taken' });
+      }
+      updates.push(' username = ?');
+      updateValues.push(username);
+    }
+
+    if (email) {
+      // Check if email is already taken by another admin
+      const [existingEmail] = await db.query(
+        'SELECT id FROM admins WHERE email = ? AND id != ?',
+        [email, adminId]
+      );
+      if (existingEmail.length > 0) {
+        return res.status(409).json({ message: 'Email already taken' });
+      }
+      updates.push(' email = ?');
+      updateValues.push(email);
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updates.push(' password = ?');
+      updateValues.push(hashedPassword);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ message: 'No fields to update' });
+    }
+
+    // Complete the update query
+    updateQuery += updates.join(',') + ' WHERE id = ?';
+    updateValues.push(adminId);
+
+    // Execute the update
+    await db.query(updateQuery, updateValues);
+
+    // Fetch updated admin data (excluding password)
+    const [updatedAdmin] = await db.query(
+      'SELECT id, username, email FROM admins WHERE id = ?',
+      [adminId]
+    );
+
+    return res.status(200).json({
+      message: 'Profile updated successfully',
+      admin: updatedAdmin[0]
+    });
+
+  } catch (err) {
+    console.error('Error updating admin profile:', err);
+    return res.status(500).json({ 
+      message: 'Failed to update profile',
+      error: err.message 
+    });
   }
 });
 

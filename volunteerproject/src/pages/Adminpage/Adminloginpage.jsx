@@ -23,25 +23,35 @@ const Adminloginpage = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/login/admin', values);
-
-      if (response.status === 200 && response.data.token) {
-        // Store the token in localStorage
-        localStorage.setItem('adminToken', response.data.token);
+      console.log('Attempting login with:', values.email); // Debug log
+  
+      const response = await axios.post('http://localhost:3000/auth/login/admin', {
+        email: values.email,
+        password: values.password
+      });
+  
+      console.log('Login response:', response.data); // Debug log
+  
+      if (response.data.token) {
+        // Store token
+        localStorage.setItem('token', response.data.token);
         
-        // Optionally, you can store admin info if needed
+        // Verify token was stored
+        const storedToken = localStorage.getItem('token');
+        console.log('Stored token:', storedToken);
+  
+        // Store admin info
         localStorage.setItem('adminInfo', JSON.stringify(response.data.admin));
-
-        alert("You've logged into your admin account");
+        
+        // Navigate to dashboard
+        setLoading(false);
         navigate('/admin/dashboard');
       } else {
-        setError("Login failed. Please try again.");
+        setError('No token received from server');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.response?.data?.message || "Failed to login. Please try again.");
-    } finally {
-      setLoading(false);
+      setError(error.response?.data?.message || 'Login failed');
     }
   };
   return (

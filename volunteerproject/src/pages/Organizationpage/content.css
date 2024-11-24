@@ -2,6 +2,7 @@
     background-color: #999280;
     flex: 1;
     padding: 32px;
+   
   }
   .sidebar-change ~ .main-content {
     margin-left: 0%; 

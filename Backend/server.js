@@ -22,6 +22,7 @@ app.use(express.json());
 app.use('/api', notificationRouter);
 app.use('/auth', authRouter);
 app.use('/auth', Organizationrouter);
+app.use('/api/organization', Organizationrouter);
 
 // Ensure DB connection before using it
 let db;
@@ -339,6 +340,46 @@ app.delete('/api/bookmarks/:opportunityId', verifyToken, async (req, res) => {
   }
 });
 
+app.post('/api/volunteer-hours', verifyToken, async (req, res) => {
+  const { title, date, hours, category, organization_name } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const query = `
+      INSERT INTO volunteer_hours 
+      (user_id, title, date, hours, category, organization_name, status)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending')
+    `;
+
+    const [result] = await db.query(query, [
+      userId, 
+      title, 
+      date, 
+      hours, 
+      category,
+      organization_name
+    ]);
+
+    res.status(201).json({
+      message: 'Hours logged successfully',
+      data: {
+        id: result.insertId,
+        user_id: userId,
+        title,
+        date,
+        hours,
+        category,
+        organization_name,
+        status: 'pending'
+      }
+    });
+  } catch (err) {
+    console.error('Error logging volunteer hours:', err);
+    res.status(500).json({ message: 'Failed to log hours' });
+  }
+});
+
+
 app.get('/api/volunteer-stats', verifyToken, async (req, res) => {
   const userId = req.user.id;
 
@@ -401,6 +442,198 @@ app.get('/api/volunteer-stats', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch volunteer stats', error: err.message });
   }
 });
+
+app.delete('/api/volunteer-hours/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  try {
+    // Verify the entry belongs to the user
+    const [entry] = await db.query(
+      'SELECT user_id FROM volunteer_hours WHERE id = ?',
+      [id]
+    );
+
+    if (!entry.length || entry[0].user_id !== userId) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    await db.query('DELETE FROM volunteer_hours WHERE id = ?', [id]);
+    res.json({ message: 'Hours entry deleted successfully' });
+
+  } catch (err) {
+    console.error('Error deleting volunteer hours:', err);
+    res.status(500).json({ message: 'Failed to delete hours', error: err.message });
+  }
+});
+// PUT endpoint to update a volunteer hours entry
+app.put('/api/volunteer-hours/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+  const { title, date, hours, category } = req.body;
+
+  try {
+    // Verify the entry belongs to the user
+    const [entry] = await db.query(
+      'SELECT user_id FROM volunteer_hours WHERE id = ?',
+      [id]
+    );
+
+    if (!entry.length || entry[0].user_id !== userId) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    // Input validation
+    if (!title || !date || !hours || !category) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    // Validate hours
+    const hoursNum = parseFloat(hours);
+    if (isNaN(hoursNum) || hoursNum < 0.5 || hoursNum > 24) {
+      return res.status(400).json({ message: 'Hours must be between 0.5 and 24' });
+    }
+
+    const query = `
+      UPDATE volunteer_hours 
+      SET title = ?, date = ?, hours = ?, category = ?
+      WHERE id = ? AND user_id = ?
+    `;
+
+    await db.query(query, [title, date, hoursNum, category, id, userId]);
+    res.json({ message: 'Hours entry updated successfully' });
+
+  } catch (err) {
+    console.error('Error updating volunteer hours:', err);
+    res.status(500).json({ message: 'Failed to update hours', error: err.message });
+  }
+});
+
+// Get volunteer hours for organization's opportunities
+app.get('/api/organization/volunteer-hours', verifyToken, async (req, res) => {
+  try {
+    // Get organization name from the organizations table
+    const [org] = await db.query(
+      'SELECT username FROM organizations WHERE id = ?',
+      [req.user.id]
+    );
+
+    if (!org.length) {
+      return res.status(404).json({ message: 'Organization not found' });
+    }
+
+    const organizationName = org[0].username;
+
+    // Fetch volunteer hours for this organization
+    const query = `
+      SELECT 
+        vh.*,
+        u.name as volunteer_name,
+        title as opportunity_title,
+        (SELECT GROUP_CONCAT(title) 
+         FROM achievements 
+         WHERE user_id = vh.user_id) as achievements
+      FROM volunteer_hours vh
+      JOIN users u ON vh.user_id = u.id
+      WHERE vh.organization_name = ?
+      ORDER BY vh.date DESC
+    `;
+
+    const [hours] = await db.query(query, [organizationName]);
+    res.json(hours);
+  } catch (err) {
+    console.error('Error fetching volunteer hours:', err);
+    res.status(500).json({ message: 'Failed to fetch volunteer hours' });
+  }
+});
+
+// Award achievement to volunteer
+app.post('/api/volunteer/achievements', verifyToken, async (req, res) => {
+  try {
+    const { user_id, title, description } = req.body;
+    
+    // Verify the organization has authority to award
+    const [org] = await db.query(
+      'SELECT username FROM organizations WHERE id = ?',
+      [req.user.id]
+    );
+
+    if (!org.length) {
+      return res.status(403).json({ message: 'Unauthorized to award achievements' });
+    }
+
+    // Check if volunteer exists
+    const [volunteer] = await db.query(
+      'SELECT id FROM users WHERE id = ?',
+      [user_id]
+    );
+
+    if (!volunteer.length) {
+      return res.status(404).json({ message: 'Volunteer not found' });
+    }
+
+    // Insert achievement
+    const [result] = await db.query(
+      `INSERT INTO achievements (user_id, title, description, date_achieved) 
+       VALUES (?, ?, ?, CURDATE())`,
+      [user_id, title, description]
+    );
+
+    res.status(201).json({
+      message: 'Achievement awarded successfully',
+      achievement: {
+        id: result.insertId,
+        user_id,
+        title,
+        description,
+        date_achieved: new Date()
+      }
+    });
+
+  } catch (err) {
+    console.error('Error awarding achievement:', err);
+    res.status(500).json({ 
+      message: 'Failed to award achievement',
+      error: err.message 
+    });
+  }
+});
+
+app.put('/api/organization/verify-hours/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { status, verification_note } = req.body;
+  
+  try {
+    // Get organization name
+    const [org] = await db.query(
+      'SELECT username FROM organizations WHERE id = ?',
+      [req.user.id]
+    );
+
+    if (!org.length) {
+      return res.status(404).json({ message: 'Organization not found' });
+    }
+
+    // Update the status
+    const [result] = await db.query(
+      'UPDATE volunteer_hours SET status = ?, verification_note = ? WHERE id = ?',
+      [status, verification_note || null, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Volunteer hours record not found' });
+    }
+
+    res.json({ message: 'Hours verification updated successfully' });
+  } catch (err) {
+    console.error('Error verifying hours:', err);
+    res.status(500).json({ message: 'Failed to verify hours', error: err.message });
+  }
+});
+
+
+
+
 // Add this endpoint to fetch applicants for a specific organization
 app.get('/api/organizations/applicants', verifyToken, async (req, res) => {
   const organizationId = req.user.id; // Assuming the organization's ID is stored in the token
@@ -498,7 +731,7 @@ app.get('/api/Organization/view-opportunities', verifyToken, async (req, res) =>
 
 app.get('/api/opportunities/:id/applicants', verifyToken, async (req, res) => {
   const opportunityId = req.params.id;
-  const organizationId = req.user.id; // Assuming the organization's ID is stored in the token
+  const organizationId = req.user.id; 
 
   try {
     const query = `

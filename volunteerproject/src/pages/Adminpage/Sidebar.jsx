@@ -19,6 +19,7 @@ const Sidebar = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen, set
         { icon: PlusCircle, label: 'Add User', value: 'add-user', path: '/admin/add-new-user' },
         { icon: MessageSquare, label: 'Feedback', value: 'feedback', path: '/admin/feedbacks' },
         { icon: User, label: 'Admin Profile', value: 'admin-profile', path: '/admin/admin-profile' },
+        { icon: User, label: 'logout', value: 'log-out', path: '/' },
     ];
 
     const getLinkClass = (itemValue) => {
