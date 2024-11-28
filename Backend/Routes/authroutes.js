@@ -91,14 +91,14 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'Invalid token format' });
   }
 
-  jwt.verify(token, process.env.JWT_KEY, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid or expired token' });
-    }
-
-    req.user = user;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    req.user = decoded;
     next();
-  });
+  } catch (err) {
+    console.error('Token verification error:', err);
+    return res.status(403).json({ message: 'Invalid or expired token' });
+  }
 };
 // Update user profile route
 router.put('/update-profile', verifyToken, async (req, res) => {
@@ -252,9 +252,13 @@ router.get('/admin/profile', verifyToken, async (req, res) => {
   try {
     console.log('User from token:', req.user); // Debug log
 
-    // Check if user is admin
-    if (!req.user.role || req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Unauthorized: Admin access required' });
+    // Check if user has admin role
+    if (!req.user || !req.user.role || req.user.role !== 'admin') {
+      console.log('Unauthorized access attempt. User:', req.user);
+      return res.status(403).json({ 
+        message: 'Unauthorized: Admin access required',
+        userInfo: req.user // This helps debug what's in the token
+      });
     }
 
     const db = await connectToDatabase();
@@ -263,8 +267,6 @@ router.get('/admin/profile', verifyToken, async (req, res) => {
       [req.user.id]
     );
 
-    console.log('Query result:', admins); // Debug log
-
     if (!admins || admins.length === 0) {
       return res.status(404).json({ message: 'Admin not found' });
     }
@@ -272,7 +274,10 @@ router.get('/admin/profile', verifyToken, async (req, res) => {
     return res.status(200).json(admins[0]);
   } catch (err) {
     console.error('Error fetching admin profile:', err);
-    return res.status(500).json({ message: 'Failed to fetch profile' });
+    return res.status(500).json({ 
+      message: 'Failed to fetch profile',
+      error: err.message
+    });
   }
 });
 

@@ -46,11 +46,12 @@ Organizationrouter.post('/signup/organization', async (req, res) => {
     // Hash the password
     const hashPassword = await bcrypt.hash(password, 10);
 
-    // Insert the new organization
-    await db.query(
+    // Insert the new organization and capture the result
+    const [result] = await db.query(
       'INSERT INTO organizations (username, email, password) VALUES (?, ?, ?)',
       [username, email, hashPassword]
     );
+
     // Create notification for new organization
     await createNotification({
       type: notificationTypes.NEW_ORGANIZATION,

@@ -47,7 +47,7 @@ export const mockOpportunities = [
         type: "Social Work",
         location: "Mombasa, Kenya",
         date: "2023-10-25",
-        skills: ["Orphan Care", "Child Education", "Counseling"]
+        skills: ["Orphan Care", "Child Education", "z"]
       },
       {
         id: 6,

@@ -40,32 +40,54 @@ export default function AdminProfile() {
     fetchAdminProfile();
   }, []);
 
-  const fetchAdminProfile = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setError('Authentication token not found');
-        return;
-      }
+ const fetchAdminProfile = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    console.log('Token being used:', token); // Debug log
 
-      const response = await axios.get('http://localhost:3000/auth/admin/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      setAdminProfile(prev => ({
-        ...prev,
-        username: response.data.username,
-        email: response.data.email,
-        password: '',
-        confirmPassword: ''
-      }));
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-      setError(err.response?.data?.message || 'Failed to fetch profile');
+    if (!token) {
+      console.log('No token found in localStorage');
+      setError('No authentication token found');
+      return;
     }
-  };
+
+    // Decode token to check its contents
+    try {
+      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Token payload:', tokenPayload); // Check if role is present
+    } catch (e) {
+      console.error('Error decoding token:', e);
+    }
+
+    const response = await axios.get('http://localhost:3000/auth/admin/profile', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log('Profile response:', response.data);
+
+    setAdminProfile(prev => ({
+      ...prev,
+      username: response.data.username,
+      email: response.data.email,
+      password: '',
+      confirmPassword: ''
+    }));
+  } catch (err) {
+    console.error('Error fetching profile:', err);
+    console.log('Error response:', err.response?.data); // Log the error response
+    
+    if (err.response?.status === 403) {
+      // If token is invalid or expired, redirect to login
+      localStorage.removeItem('token');
+      navigate('/admin/login');
+    }
+    
+    setError(err.response?.data?.message || 'Failed to fetch profile');
+  }
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -23,42 +23,64 @@ const Adminloginpage = () => {
     setLoading(true);
 
     try {
-      console.log('Attempting login with:', values.email); // Debug log
+      console.log('Attempting admin login with:', values.email); // Debug log
   
-      const response = await axios.post('http://localhost:3000/auth/login/admin', {
-        email: values.email,
-        password: values.password
-      });
+      // Configure axios with proper headers
+      const response = await axios.post('http://localhost:3000/auth/login/admin', 
+        {
+          email: values.email,
+          password: values.password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
   
       console.log('Login response:', response.data); // Debug log
   
       if (response.data.token) {
-        // Store token
-        localStorage.setItem('token', response.data.token);
+        // Store token with 'adminToken' key to distinguish from regular user tokens
+        localStorage.setItem('adminToken', response.data.token);
         
-        // Verify token was stored
-        const storedToken = localStorage.getItem('token');
-        console.log('Stored token:', storedToken);
-  
         // Store admin info
-        localStorage.setItem('adminInfo', JSON.stringify(response.data.admin));
+        localStorage.setItem('adminInfo', JSON.stringify({
+          id: response.data.admin.id,
+          username: response.data.admin.username,
+          email: response.data.admin.email,
+          role: 'admin'
+        }));
         
-        // Navigate to dashboard
+        // Configure axios defaults for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        
         setLoading(false);
         navigate('/admin/dashboard');
       } else {
-        setError('No token received from server');
+        setLoading(false);
+        setError('Invalid credentials');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      setError(error.response?.data?.message || 'Login failed');
+      setLoading(false);
+      console.error('Login error:', error.response?.data || error.message);
+      
+      if (error.response?.status === 404) {
+        setError('Admin not found');
+      } else if (error.response?.status === 401) {
+        setError('Invalid credentials');
+      } else {
+        setError('Login failed. Please try again.');
+      }
     }
   };
+
   return (
     <div className="container">
       {loading && <Loading />}
       <div className="heading">Oversee and Inspire</div>
       <form className="form" onSubmit={handleSubmit}>
+        {error && <div className="error-message text-red-500 mb-4">{error}</div>}
         <input
           required
           className="input"
@@ -75,7 +97,12 @@ const Adminloginpage = () => {
           placeholder="Admin Password"
           onChange={handleChanges}
         />
-        <input className="login-button" type="submit" value="Login" />
+        <input 
+          className="login-button" 
+          type="submit" 
+          value={loading ? "Logging in..." : "Login"} 
+          disabled={loading}
+        />
       </form>
       <div className="login-link">
         <span>Return to </span>
