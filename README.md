@@ -36,7 +36,6 @@ Enable data-driven volunteer program evaluation through logs and reports
 
 Foster more meaningful engagement through interest- and skill-based matching.
 
-Explore More.
-http://192.168.100.25:62370 
+
 👤 Author
 Peter Wainaina
